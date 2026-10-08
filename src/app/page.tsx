@@ -1,7 +1,8 @@
 "use client";
 
-import { useState, useCallback } from "react";
+import { useState } from "react";
 import CameraFeed from "@/components/CameraFeed";
+import PoseCamera from "@/components/PoseCamera";
 
 type AppState = "home" | "camera-check" | "playing";
 
@@ -10,29 +11,23 @@ export default function HomePage() {
   const [cameraError, setCameraError] = useState<string | null>(null);
   const [cameraReady, setCameraReady] = useState(false);
 
-  const handleStartCamera = useCallback(() => {
+  const handleStartCamera = () => {
     setCameraError(null);
     setCameraReady(false);
     setAppState("camera-check");
-  }, []);
+  };
 
-  const handleCameraReady = useCallback(() => {
-    setCameraReady(true);
-  }, []);
+  const handleCameraReady = () => setCameraReady(true);
 
-  const handleCameraError = useCallback((msg: string) => {
-    setCameraError(msg);
-  }, []);
+  const handleCameraError = (msg: string) => setCameraError(msg);
 
-  const handleBack = useCallback(() => {
+  const handleBack = () => {
     setAppState("home");
     setCameraError(null);
     setCameraReady(false);
-  }, []);
+  };
 
-  const handlePlay = useCallback(() => {
-    setAppState("playing");
-  }, []);
+  const handlePlay = () => setAppState("playing");
 
   return (
     <main className="min-h-screen flex flex-col">
@@ -180,27 +175,15 @@ export default function HomePage() {
               disabled={!cameraReady}
               className="px-8 py-3 rounded-xl bg-green-500 hover:bg-green-400 disabled:opacity-30 disabled:cursor-not-allowed text-black font-bold text-sm transition-all hover:scale-105 active:scale-95"
             >
-              Start Playing →
+              Test Pose Tracking →
             </button>
           </div>
         </div>
       )}
 
-      {/* ── PLAYING STATE (placeholder for Phase 2) ── */}
+      {/* ── PLAYING STATE — MediaPipe Pose test view ── */}
       {appState === "playing" && (
-        <div className="flex flex-1 flex-col items-center justify-center gap-6 text-center px-6">
-          <div className="text-6xl">🏏</div>
-          <h2 className="text-3xl font-black text-green-400">Game coming soon</h2>
-          <p className="text-green-200/60 max-w-sm">
-            The 3D pitch scene and swing detection are being built next. Camera is confirmed working!
-          </p>
-          <button
-            onClick={handleBack}
-            className="px-6 py-3 rounded-xl border border-green-800/50 text-green-400 hover:bg-green-950/40 transition-colors text-sm font-medium"
-          >
-            ← Back to Home
-          </button>
-        </div>
+        <PoseCamera onBack={handleBack} />
       )}
 
       {/* ── FOOTER ── */}
