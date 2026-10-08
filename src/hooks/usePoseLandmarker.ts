@@ -54,8 +54,8 @@ interface UsePoseLandmarkerOptions {
   highlightCricketPoints?: boolean;
 }
 
-const WASM_CDN =
-  "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.22/wasm";
+// Served locally from public/mediapipe/wasm/ (copied there by the postinstall script)
+const WASM_PATH = "/mediapipe/wasm";
 const MODEL_URL =
   "https://storage.googleapis.com/mediapipe-models/pose_landmarker/pose_landmarker_lite/float16/latest/pose_landmarker_lite.task";
 
@@ -96,7 +96,7 @@ export function usePoseLandmarker({
       const vision_module = await import("@mediapipe/tasks-vision");
       const { PoseLandmarker, FilesetResolver, DrawingUtils } = vision_module;
 
-      const vision = await FilesetResolver.forVisionTasks(WASM_CDN);
+      const vision = await FilesetResolver.forVisionTasks(WASM_PATH);
       const landmarker = await PoseLandmarker.createFromOptions(vision, {
         baseOptions: { modelAssetPath: MODEL_URL, delegate },
         runningMode: "VIDEO",

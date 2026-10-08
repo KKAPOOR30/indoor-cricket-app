@@ -1,5 +1,8 @@
 # Dependencies
 node_modules/
+
+# Auto-generated MediaPipe WASM files (copied by postinstall script)
+public/mediapipe/
 .pnp
 .pnp.js
 
